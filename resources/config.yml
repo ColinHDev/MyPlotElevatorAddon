@@ -1,0 +1,16 @@
+#Stelle ein, ob eine Etage auf Blöcke, wie Lava vor dem Teleportieren geprüft werden soll
+checkFloor: true
+
+#Stelle ein, ob Helfer eines Grundstückes Aufzüge bearbeiten sollten
+helper.privateElevator: true
+
+#Stelle ein, ob Helfer eines Grundstückes private Aufzüge nutzen können sollten
+helper.privateElevator.use: true
+
+#Stelle ein, wie oft sich mit einem Aufzug teleportiert werden kann
+#Standard: einmal pro eine Sekunde
+cooldown.teleport: 1
+
+#Stelle ein, wie oft ein Aufzug umgestellt werden kann
+#Standard: einmal pro drei Sekunden
+cooldown.interact: 3

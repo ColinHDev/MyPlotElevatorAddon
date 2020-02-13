@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="5b184a29-e1e9-4e8d-9357-c975a871af7f" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution>
+      <executable />
+    </execution>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration">
+    <include_path>
+      <path value="$PROJECT_DIR$/../../../../APIs/PocketMine-MP/src" />
+      <path value="$PROJECT_DIR$/../../../../APIs/PocketMine-MP Math/src" />
+      <path value="$PROJECT_DIR$/../../../../APIs/PocketMine-MP - Plugins/MyPlot/src" />
+    </include_path>
+  </component>
+  <component name="ProjectId" id="1WRWu6M2coBUApa43Op8r7C6LdS" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../APIs/PocketMine-MP - Plugins/MyPlot/src" />
+    <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Development\Projekte\Colin\PocketMine-MP\Elevator\src\ColinHDev\Elevator" />
+    </key>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5b184a29-e1e9-4e8d-9357-c975a871af7f" name="Default Changelist" comment="" />
+      <created>1579113106566</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1579113106566</updated>
+      <workItem from="1579113107891" duration="7366000" />
+      <workItem from="1579194651966" duration="121000" />
+      <workItem from="1579196920352" duration="6288000" />
+      <workItem from="1579265167615" duration="1410000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="690" y="276" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1579118111953">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="690" y="276" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1579118111953" />
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1579121169547">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1579121169547" />
+    <state x="620" y="319" key="NewPhpClassDialog" timestamp="1579121446539">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="620" y="319" key="NewPhpClassDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1579121446539" />
+    <state x="461" y="163" key="SettingsEditor" timestamp="1579121171779">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="163" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1579121171779" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1579121650913">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1579121650913" />
+  </component>
+</project>

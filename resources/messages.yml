@@ -1,0 +1,28 @@
+prefix: "§l§2Elevator"
+prefixArrows: " §r§8>§r "
+
+
+
+create.noPermissions: "§cDu hast nicht die nötigen Berechtigungen, um Aufzüge zu erstellen."
+create.success: "§7Du hast diesen Aufzug erfolgreich erstellt."
+
+remove.noPermissions: "§cDu hast nicht die nötigen Berechtigungen, um Aufzüge zu zerstören."
+remove.success: "§7Du hast diesen Aufzug erfolgreich zerstört."
+
+
+use.noPermissions: "§cDu hast nicht die nötigen Berechtigungen, um Aufzüge zu nutzen."
+use.noElevator.up: "§cDu befindest dich bereits in der höchsten Etage."
+use.noElevator.down: "§cDu befindest dich bereits in der tiefsten Etage."
+use.floorNotFound: "§cDie nächste Etage konnte nicht gefunden werden."
+use.floorNotSafe: "§cDie nächste Etage wurde als unsicher eingestuft, weshalb du sie nicht betreten kannst."
+
+tip.up: "§7Du bist nun in der §e%floor% §7Etage. §8[§e%floor%§7/§c%maxFloor%§8]"
+tip.down: "§7Du bist nun in der §e%floor% §7Etage. §8[§e%floor%§7/§c%maxFloor%§8]"
+
+
+
+#interact.noPlot: "§cDu befindest dich auf keinem Grundstück."
+interact.notOwner: "§cDu kannst Aufzüge nicht umstellen."
+interact.toFast: "§cBitte warte einen Moment, bevor du diesen Aufzug erneut umstellst."
+interact.success.private: "§7Du hast diesen Fahrstuhl erfolgreich auf §6privat §7gestellt."
+interact.success.public: "§7Du hast diesen Fahrstuhl erfolgreich auf §6öffentlich §7gestellt."
