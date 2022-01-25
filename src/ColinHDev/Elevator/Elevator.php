@@ -20,8 +20,8 @@ use ColinHDev\CPlot\CPlot;
 
 class Elevator extends PluginBase
 {
-    /** @var MyPlot|CPlot|null $plotPlugin */
-    public MyPlot|CPlot|null $plotPlugin;
+    /** @var MyPlot|null $plotPlugin */
+    public MyPlot|null $plotPlugin;
 
     /** @var Config $config */
     public Config $config;
@@ -38,7 +38,6 @@ class Elevator extends PluginBase
     {
         //initMyPlot
         $this->plotPlugin = $this->getServer()->getPluginManager()->getPlugin("MyPlot");
-        if ($this->plotPlugin === null) $this->plotPlugin = $this->getServer()->getPluginManager()->getPlugin("CPlot");
 
         if($this->plotPlugin === null) {
             $this->getLogger()->error("Das Plugin \"MyPlot\" konnte auf diesem Server nicht gefunden werden.");
@@ -89,8 +88,8 @@ class Elevator extends PluginBase
                 $y++;
             }
         }elseif($where === "down") {
-            $y = $block->getPosition()->getWorld()->getMinY();
-            while ($y >= 0) {
+            $y = $block->getPosition()->getY() - 1;
+            while ($y >= $block->getPosition()->getWorld()->getMinY()) {
                 $blockToCheck = $block->getPosition()->getWorld()->getBlock(new Vector3($block->getPosition()->getX(), $y, $block->getPosition()->getZ()));
                 if (in_array($blockToCheck->getId(), $blocks)) {
                     $count = $count + 1;
@@ -130,8 +129,8 @@ class Elevator extends PluginBase
                 $y++;
             }
         }else {
-            $y = $block->getPosition()->getWorld()->getMinY();
-            while ($y >= 0) {
+            $y = $block->getPosition()->getY() - 1;
+            while ($y >= $block->getPosition()->getWorld()->getMinY()) {
                 $blockToCheck = $block->getPosition()->getWorld()->getBlock(new Vector3($block->getPosition()->getX(), $y, $block->getPosition()->getZ()));
                 if (in_array($blockToCheck->getId(), $blocks)) {
                     $elevator = $blockToCheck;
