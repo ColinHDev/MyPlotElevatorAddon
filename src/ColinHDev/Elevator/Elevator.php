@@ -2,6 +2,8 @@
 
 namespace ColinHDev\Elevator;
 
+use pocketmine\block\BlockLegacyIds;
+use pocketmine\permission\PermissionManager;
 use pocketmine\plugin\PluginBase;
 use pocketmine\block\Block;
 use pocketmine\math\Vector3;
@@ -14,30 +16,31 @@ use ColinHDev\Elevator\listener\PlayerJumpListener;
 use ColinHDev\Elevator\listener\PlayerToggleSneakListener;
 
 use MyPlot\MyPlot;
+use ColinHDev\CPlot\CPlot;
 
 class Elevator extends PluginBase
 {
-    /** @var MyPlot $myplot */
-    public $myplot;
+    public MyPlot|null $plotPlugin;
 
     /** @var Config $config */
-    public $config;
+    public Config $config;
     /** @var Config $messages */
-    public $messages;
+    public Config $messages;
 
     /** @var array $cooldown */
-    public $cooldown = [];
+    public array $cooldown = [];
     /** @var array $interactCooldown */
-    public $interactCooldown = [];
+    public array $interactCooldown = [];
 
 
-    public function onEnable()
+    public function onEnable(): void
     {
         //initMyPlot
-        $this->myplot = $this->getServer()->getPluginManager()->getPlugin("MyPlot");
-        if($this->myplot === null) {
+        $this->plotPlugin = $this->getServer()->getPluginManager()->getPlugin("MyPlot");
+
+        if($this->plotPlugin === null) {
             $this->getLogger()->error("Das Plugin \"MyPlot\" konnte auf diesem Server nicht gefunden werden.");
-            $this->setEnabled(false);
+            $this->getServer()->getPluginManager()->disablePlugin($this);
             return;
         }
 
@@ -62,24 +65,24 @@ class Elevator extends PluginBase
 
     public function getElevators(Block $block, string $where = "", bool $searchForPrivate = false) : int {
         if(!$searchForPrivate) {
-            $blocks = [Block::DAYLIGHT_SENSOR];
+            $blocks = [BlockLegacyIds::DAYLIGHT_SENSOR];
         }else{
-            $blocks = [Block::DAYLIGHT_SENSOR, Block::DAYLIGHT_SENSOR_INVERTED];
+            $blocks = [BlockLegacyIds::DAYLIGHT_SENSOR, BlockLegacyIds::DAYLIGHT_SENSOR_INVERTED];
         }
         $count = 0;
         if($where === "up") {
-            $y = $block->getY() + 1;
-            while ($y < $block->getLevel()->getWorldHeight()) {
-                $blockToCheck = $block->getLevel()->getBlock(new Vector3($block->getX(), $y, $block->getZ()));
+            $y = $block->getPosition()->getY() + 1;
+            while ($y < $block->getPosition()->getWorld()->getMaxY()) {
+                $blockToCheck = $block->getPosition()->getWorld()->getBlock(new Vector3($block->getPosition()->getX(), $y, $block->getPosition()->getZ()));
                 if (in_array($blockToCheck->getId(), $blocks)) {
                     $count = $count + 1;
                 }
                 $y++;
             }
         }elseif($where === "down") {
-            $y = $block->getY() - 1;
-            while ($y >= 0) {
-                $blockToCheck = $block->getLevel()->getBlock(new Vector3($block->getX(), $y, $block->getZ()));
+            $y = $block->getPosition()->getY() - 1;
+            while ($y >= $block->getPosition()->getWorld()->getMinY()) {
+                $blockToCheck = $block->getPosition()->getWorld()->getBlock(new Vector3($block->getPosition()->getX(), $y, $block->getPosition()->getZ()));
                 if (in_array($blockToCheck->getId(), $blocks)) {
                     $count = $count + 1;
                 }
@@ -87,8 +90,8 @@ class Elevator extends PluginBase
             }
         }else {
             $y = 0;
-            while ($y < $block->getLevel()->getWorldHeight()) {
-                $blockToCheck = $block->getLevel()->getBlock(new Vector3($block->getX(), $y, $block->getZ()));
+            while ($y < $block->getPosition()->getWorld()->getMaxY()) {
+                $blockToCheck = $block->getPosition()->getWorld()->getBlock(new Vector3($block->getPosition()->getX(), $y, $block->getPosition()->getZ()));
                 if (in_array($blockToCheck->getId(), $blocks)) {
                     $count = $count + 1;
                 }
@@ -102,15 +105,15 @@ class Elevator extends PluginBase
 
     public function getNextElevator(Block $block, string $where = "", bool $searchForPrivate = false) : ?Block {
         if(!$searchForPrivate) {
-            $blocks = [Block::DAYLIGHT_SENSOR];
+            $blocks = [BlockLegacyIds::DAYLIGHT_SENSOR];
         }else{
-            $blocks = [Block::DAYLIGHT_SENSOR, Block::DAYLIGHT_SENSOR_INVERTED];
+            $blocks = [BlockLegacyIds::DAYLIGHT_SENSOR, BlockLegacyIds::DAYLIGHT_SENSOR_INVERTED];
         }
         $elevator = null;
         if($where === "up") {
-            $y = $block->getY() + 1;
-            while ($y < $block->getLevel()->getWorldHeight()) {
-                $blockToCheck = $block->getLevel()->getBlock(new Vector3($block->getX(), $y, $block->getZ()));
+            $y = $block->getPosition()->getY() + 1;
+            while ($y < $block->getPosition()->getWorld()->getMaxY()) {
+                $blockToCheck = $block->getPosition()->getWorld()->getBlock(new Vector3($block->getPosition()->getX(), $y, $block->getPosition()->getZ()));
                 if (in_array($blockToCheck->getId(), $blocks)) {
                     $elevator = $blockToCheck;
                     break;
@@ -118,9 +121,9 @@ class Elevator extends PluginBase
                 $y++;
             }
         }else {
-            $y = $block->getY() - 1;
-            while ($y >= 0) {
-                $blockToCheck = $block->getLevel()->getBlock(new Vector3($block->getX(), $y, $block->getZ()));
+            $y = $block->getPosition()->getY() - 1;
+            while ($y >= $block->getPosition()->getWorld()->getMinY()) {
+                $blockToCheck = $block->getPosition()->getWorld()->getBlock(new Vector3($block->getPosition()->getX(), $y, $block->getPosition()->getZ()));
                 if (in_array($blockToCheck->getId(), $blocks)) {
                     $elevator = $blockToCheck;
                     break;
@@ -132,24 +135,24 @@ class Elevator extends PluginBase
 
         if($this->config->get("checkFloor") !== true) return $elevator;
 
-        $block1 = $elevator->getLevel()->getBlock(new Vector3($elevator->getX(), $elevator->getY() + 1, $elevator->getZ()));
-        $block2 = $elevator->getLevel()->getBlock(new Vector3($elevator->getX(), $elevator->getY() + 2, $elevator->getZ()));
+        $block1 = $elevator->getPosition()->getWorld()->getBlock(new Vector3($elevator->getPosition()->getX(), $elevator->getPosition()->getY() + 1, $elevator->getPosition()->getZ()));
+        $block2 = $elevator->getPosition()->getWorld()->getBlock(new Vector3($elevator->getPosition()->getX(), $elevator->getPosition()->getY() + 2, $elevator->getPosition()->getZ()));
         if($block1->getId() !== 0 || $block2->getId() !== 0) return $block;
 
 
         $blocksToCheck = [];
 
-        $blocksToCheck[] = $block1->getLevel()->getBlock(new Vector3($block1->getX() + 1, $block1->getY(), $block1->getZ()));
-        $blocksToCheck[] = $block1->getLevel()->getBlock(new Vector3($block1->getX() - 1, $block1->getY(), $block1->getZ()));
-        $blocksToCheck[] = $block1->getLevel()->getBlock(new Vector3($block1->getX(), $block1->getY(), $block1->getZ() + 1));
-        $blocksToCheck[] = $block1->getLevel()->getBlock(new Vector3($block1->getX(), $block1->getY(), $block1->getZ() - 1));
+        $blocksToCheck[] = $block1->getPosition()->getWorld()->getBlock(new Vector3($block1->getPosition()->getX() + 1, $block1->getPosition()->getY(), $block1->getPosition()->getZ()));
+        $blocksToCheck[] = $block1->getPosition()->getWorld()->getBlock(new Vector3($block1->getPosition()->getX() - 1, $block1->getPosition()->getY(), $block1->getPosition()->getZ()));
+        $blocksToCheck[] = $block1->getPosition()->getWorld()->getBlock(new Vector3($block1->getPosition()->getX(), $block1->getPosition()->getY(), $block1->getPosition()->getZ() + 1));
+        $blocksToCheck[] = $block1->getPosition()->getWorld()->getBlock(new Vector3($block1->getPosition()->getX(), $block1->getPosition()->getY(), $block1->getPosition()->getZ() - 1));
 
-        $blocksToCheck[] = $block2->getLevel()->getBlock(new Vector3($block2->getX() + 1, $block2->getY(), $block2->getZ()));
-        $blocksToCheck[] = $block2->getLevel()->getBlock(new Vector3($block2->getX() - 1, $block2->getY(), $block2->getZ()));
-        $blocksToCheck[] = $block2->getLevel()->getBlock(new Vector3($block2->getX(), $block2->getY(), $block2->getZ() + 1));
-        $blocksToCheck[] = $block2->getLevel()->getBlock(new Vector3($block2->getX(), $block2->getY(), $block2->getZ() - 1));
+        $blocksToCheck[] = $block2->getPosition()->getWorld()->getBlock(new Vector3($block2->getPosition()->getX() + 1, $block2->getPosition()->getY(), $block2->getPosition()->getZ()));
+        $blocksToCheck[] = $block2->getPosition()->getWorld()->getBlock(new Vector3($block2->getPosition()->getX() - 1, $block2->getPosition()->getY(), $block2->getPosition()->getZ()));
+        $blocksToCheck[] = $block2->getPosition()->getWorld()->getBlock(new Vector3($block2->getPosition()->getX(), $block2->getPosition()->getY(), $block2->getPosition()->getZ() + 1));
+        $blocksToCheck[] = $block2->getPosition()->getWorld()->getBlock(new Vector3($block2->getPosition()->getX(), $block2->getPosition()->getY(), $block2->getPosition()->getZ() - 1));
 
-        $deniedBlocks = [Block::LAVA, Block::FLOWING_LAVA, Block::WATER, Block::FLOWING_WATER];
+        $deniedBlocks = [BlockLegacyIds::LAVA, BlockLegacyIds::FLOWING_LAVA, BlockLegacyIds::WATER, BlockLegacyIds::FLOWING_WATER];
         foreach ($blocksToCheck as $blockToCheck) {
             if(in_array($blockToCheck->getId(), $deniedBlocks)) return $block;
         }
@@ -161,15 +164,15 @@ class Elevator extends PluginBase
 
     public function getFloor(Block $block, bool $searchForPrivate = false) : int {
         if(!$searchForPrivate) {
-            $blocks = [Block::DAYLIGHT_SENSOR];
+            $blocks = [BlockLegacyIds::DAYLIGHT_SENSOR];
         }else{
-            $blocks = [Block::DAYLIGHT_SENSOR, Block::DAYLIGHT_SENSOR_INVERTED];
+            $blocks = [BlockLegacyIds::DAYLIGHT_SENSOR, BlockLegacyIds::DAYLIGHT_SENSOR_INVERTED];
         }
         $sw = 0;
         $y = -1;
-        while ($y < $block->getLevel()->getWorldHeight()) {
+        while ($y < $block->getPosition()->getWorld()->getMaxY()) {
             $y++;
-            $blockToCheck = $block->getLevel()->getBlock(new Vector3($block->getX(), $y, $block->getZ()));
+            $blockToCheck = $block->getPosition()->getWorld()->getBlock(new Vector3($block->getPosition()->getX(), $y, $block->getPosition()->getZ()));
             if (!in_array($blockToCheck->getId(), $blocks)) continue;
             $sw++;
             if($blockToCheck === $block) break;

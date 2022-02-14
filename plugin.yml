@@ -1,26 +1,24 @@
 name: Elevator
 main: ColinHDev\Elevator\Elevator
-version: "1.0"
+version: 1.0.1
 
-api: 3.0.0
+api: 4.0.0
+
+depend: ["MyPlot"]
 
 author: ColinHDev
 website: https://github.com/ColinHDev
 
 permissions:
-    elevator.*:
+    elevator.admin.use:
         default: op
-        description: "Gib einem Spieler Zugriff auf alle Funktionen dieses Plugins."
-        children:
-            elevator.admin.use:
-                default: op
-                description: "Erlaube einem Spieler alle Aufzüge zu nutzen."
-            elevator.admin.interact:
-                default: op
-                description: "Erlaube einem Spieler alle Aufzüge umzustellen."
-            elevator.admin.create:
-                default: op
-                description: "Erlaube einem Spieler überall Aufzüge zu erstellen."
-            elevator.admin.remove:
-                default: op
-                description: "Erlaube einem Spieler überall Aufzüge zu zerstören."
+        description: "Erlaube einem Spieler alle Aufzüge zu nutzen."
+    elevator.admin.interact:
+        default: op
+        description: "Erlaube einem Spieler alle Aufzüge umzustellen."
+    elevator.admin.create:
+        default: op
+        description: "Erlaube einem Spieler überall Aufzüge zu erstellen."
+    elevator.admin.remove:
+        default: op
+        description: "Erlaube einem Spieler überall Aufzüge zu zerstören."

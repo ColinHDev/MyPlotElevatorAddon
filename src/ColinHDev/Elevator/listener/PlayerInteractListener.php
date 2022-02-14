@@ -2,9 +2,10 @@
 
 namespace ColinHDev\Elevator\listener;
 
+use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockLegacyIds;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
-use pocketmine\block\Block;
 
 use ColinHDev\Elevator\ElevatorListener;
 
@@ -12,7 +13,7 @@ class PlayerInteractListener extends ElevatorListener implements Listener
 {
     public function onPlayerInteract(PlayerInteractEvent $event) {
         if($event->isCancelled()) return;
-        if($event->getBlock()->getId() !== Block::DAYLIGHT_SENSOR && $event->getBlock()->getId() !== Block::DAYLIGHT_SENSOR_INVERTED) return;
+        if($event->getBlock()->getId() !== BlockLegacyIds::DAYLIGHT_SENSOR && $event->getBlock()->getId() !== BlockLegacyIds::DAYLIGHT_SENSOR_INVERTED) return;
         if(($plot = $this->getPlugin()->myplot->getPlotByPosition($event->getPlayer()->getPosition())) === null) return;
 
         if($plot->owner !== $event->getPlayer()->getName() && !$event->getPlayer()->hasPermission("elevator.admin.interact")) {
@@ -33,12 +34,12 @@ class PlayerInteractListener extends ElevatorListener implements Listener
             }
         }
 
-        if($event->getBlock()->getId() === Block::DAYLIGHT_SENSOR) {
-            $event->getBlock()->getLevel()->setBlock($event->getBlock()->asVector3(), Block::get(Block::DAYLIGHT_SENSOR_INVERTED));
+        if($event->getBlock()->getId() === BlockLegacyIds::DAYLIGHT_SENSOR) {
+            $event->getBlock()->getPosition()->getWorld()->setBlock($event->getBlock()->getPosition()->asVector3(), BlockFactory::getInstance()->get(BlockLegacyIds::DAYLIGHT_SENSOR_INVERTED, 0));
             $event->getPlayer()->sendMessage($this->getPrefix() . $this->getMessage("interact.success.private"));
             $this->getPlugin()->interactCooldown[$event->getPlayer()->getName()] = time() + $this->getPlugin()->config->get("cooldown.interact");
         }else{
-            $event->getBlock()->getLevel()->setBlock($event->getBlock()->asVector3(), Block::get(Block::DAYLIGHT_SENSOR));
+            $event->getBlock()->getPosition()->getWorld()->setBlock($event->getBlock()->getPosition()->asVector3(), BlockFactory::getInstance()->get(BlockLegacyIds::DAYLIGHT_SENSOR, 0));
             $event->getPlayer()->sendMessage($this->getPrefix() . $this->getMessage("interact.success.public"));
             $this->getPlugin()->interactCooldown[$event->getPlayer()->getName()] = time() + $this->getPlugin()->config->get("cooldown.interact");
         }

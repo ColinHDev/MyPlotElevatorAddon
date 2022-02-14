@@ -4,14 +4,8 @@ namespace ColinHDev\Elevator;
 
 abstract class ElevatorListener
 {
-    /** @var Elevator $plugin */
-    private $plugin;
 
-
-    public function __construct(Elevator $plugin)
-    {
-        $this->plugin = $plugin;
-    }
+    public function __construct(private Elevator $plugin) {}
 
 
     protected final function getPlugin() : Elevator {
