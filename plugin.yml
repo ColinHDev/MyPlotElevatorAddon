@@ -10,9 +10,6 @@ author: ColinHDev
 website: https://github.com/ColinHDev
 
 permissions:
-    elevator.*:
-        default: op
-        description: "Gib einem Spieler Zugriff auf alle Funktionen dieses Plugins."
     elevator.admin.use:
         default: op
         description: "Erlaube einem Spieler alle Aufzüge zu nutzen."
