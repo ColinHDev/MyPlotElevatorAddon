@@ -53,13 +53,6 @@ class Elevator extends PluginBase
         $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $this->messages = new Config($this->getDataFolder() . "messages.yml", Config::YAML);
 
-        //initPermissions
-        $bypassPerm = PermissionManager::getInstance()->getPermission("elevator.*");
-        $bypassPerm->addChild("elevator.admin.use", true);
-        $bypassPerm->addChild("elevator.admin.interact", true);
-        $bypassPerm->addChild("elevator.admin.create", true);
-        $bypassPerm->addChild("elevator.admin.remove", true);
-
         //initListener
         $this->getServer()->getPluginManager()->registerEvents(new BlockBreakListener($this), $this);
         $this->getServer()->getPluginManager()->registerEvents(new BlockPlaceListener($this), $this);
