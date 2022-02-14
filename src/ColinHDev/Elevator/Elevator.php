@@ -20,7 +20,6 @@ use ColinHDev\CPlot\CPlot;
 
 class Elevator extends PluginBase
 {
-    /** @var MyPlot|null $plotPlugin */
     public MyPlot|null $plotPlugin;
 
     /** @var Config $config */
